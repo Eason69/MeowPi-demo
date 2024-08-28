@@ -3,12 +3,11 @@ ___
 # 开发板简介
 * 操作系统: 运行 Linux 系统
 * 显示屏: 3.1 英寸，MIPI 接口，分辨率 480×800
-* 主控芯片: 全志 T113-S3，双核 ARM Cortex-A7，内存 128MB，支持硬件解码
+* 主控芯片: T113-S3，双核 ARM Cortex-A7，内存 128MB，支持硬件解码
 * USB 接口:
   * 双 USB-A Host 接口：支持HUB、键盘、鼠标、采集卡、U盘等设备
   * 三路 TYPE-C 接口：用于 USB 网卡、串口调试、键鼠输出
 * 散热: 配备被动散热片
-
 <div align="center">
   <img src="/pic/front.jpg" width="300" height="400" alt="MeowPi 正面"/>
   <img src="/pic/opposite.jpg" width="300" height="400" alt="MeowPi 背面"/>
