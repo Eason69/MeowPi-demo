@@ -136,7 +136,7 @@ void ui_ScreenHome_screen_init(void)
     lv_obj_set_x(ui_Label36, 0);
     lv_obj_set_y(ui_Label36, 50);
     lv_obj_set_align(ui_Label36, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_Label36, "KMBOX");
+    lv_label_set_text(ui_Label36, "CATBOX");
     ui_object_set_themeable_style_property(ui_Label36, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_TEXT_COLOR,
                                            _ui_theme_color_white);
     ui_object_set_themeable_style_property(ui_Label36, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_TEXT_OPA,
@@ -284,7 +284,6 @@ void ui_ScreenHome_screen_init(void)
     lv_obj_set_style_bg_color(ui_Slider1, lv_color_hex(0xFFFFFF), LV_PART_KNOB | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_opa(ui_Slider1, 0, LV_PART_KNOB | LV_STATE_DEFAULT);
 
-    lv_obj_add_event_cb(ui_Slider1, ui_event_Slider1, LV_EVENT_VALUE_CHANGED, NULL);
     lv_obj_add_event_cb(ui_Panel1, ui_event_Panel1, LV_EVENT_ALL, NULL);
     lv_obj_add_event_cb(ui_Panel7, ui_event_Panel7, LV_EVENT_ALL, NULL);
     lv_obj_add_event_cb(ui_Button1, ui_event_Button1, LV_EVENT_ALL, NULL);

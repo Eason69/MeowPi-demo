@@ -1,6 +1,6 @@
 #include "wrapper.h"
 #include "configuration.h"
-#include "KmNetwork.h"
+#include "catNetwork.h"
 #include "hid_controller.h"
 extern "C" {
 #include "ui.h"
@@ -32,11 +32,11 @@ extern "C" {
 
     void wrapper_KmnetManage(bool state) {
         if(state){
-            kmnetwork::GetInstance().set_is_kmnet(false);
-            kmnetwork::GetInstance().netStart();
+            catnetwork::GetInstance().set_is_catnet(false);
+            catnetwork::GetInstance().netStart();
         }else{
-            kmnetwork::GetInstance().set_is_kmnet(true);
-            kmnetwork::GetInstance().neteJoin();
+            catnetwork::GetInstance().set_is_catnet(true);
+            catnetwork::GetInstance().neteJoin();
         }
     }
 

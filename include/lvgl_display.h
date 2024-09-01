@@ -8,7 +8,7 @@
 #include "sunxifb.h"
 #include "evdev.h"
 #include "configuration.h"
-#include "KmNetwork.h"
+#include "catNetwork.h"
 #include <unistd.h>
 #include <cstdlib>
 #include <cstdio>

@@ -10,7 +10,7 @@
 #include <shared_mutex>
 #include "mouse.h"
 #include "keyboard.h"
-#include "KmNetwork.h"
+#include "catNetwork.h"
 
 class HidController {
 public:

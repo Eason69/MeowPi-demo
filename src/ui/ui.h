@@ -17,6 +17,7 @@ extern "C" {
 #include "ui_theme_manager.h"
 #include "ui_themes.h"
 
+void ui_event_Slider1(lv_event_t * e); //背光
 void LOGO_Animation(lv_obj_t * TargetObject, int delay);
 void dropdown_Animation(lv_obj_t * TargetObject, int delay);
 void deopupward_Animation(lv_obj_t * TargetObject, int delay);
@@ -55,7 +56,6 @@ extern lv_obj_t * ui_Button3;
 extern lv_obj_t * ui_Image10;
 extern lv_obj_t * ui_Label9;
 extern lv_obj_t * ui_Image9;
-void ui_event_Slider1(lv_event_t * e);
 extern lv_obj_t * ui_Slider1;
 // SCREEN: ui_ScreenSet
 void ui_ScreenSet_screen_init(void);
@@ -74,6 +74,14 @@ void ui_event_Panel13(lv_event_t * e);
 extern lv_obj_t * ui_Panel13;
 extern lv_obj_t * ui_Label14;
 extern lv_obj_t * ui_Image15;
+void ui_event_Panel8(lv_event_t * e);
+extern lv_obj_t * ui_Panel8;
+extern lv_obj_t * ui_Label35;
+extern lv_obj_t * ui_Image21;
+void ui_event_Panel10(lv_event_t * e);
+extern lv_obj_t * ui_Panel10;
+extern lv_obj_t * ui_Label46;
+extern lv_obj_t * ui_Image22;
 void ui_event_Panel12(lv_event_t * e);
 extern lv_obj_t * ui_Panel12;
 extern lv_obj_t * ui_Label13;
@@ -131,11 +139,10 @@ extern lv_obj_t * ui_Label29;
 extern lv_obj_t * ui_Label30;
 extern lv_obj_t * ui_Label31;
 extern lv_obj_t * ui_Label32;
-// SCREEN: ui_ScreenKMBOX
-void ui_ScreenKMBOX_screen_init(void);
-void ui_event_Switch1(lv_event_t * e);
-void ui_event_ScreenKMBOX(lv_event_t * e);
-extern lv_obj_t * ui_ScreenKMBOX;
+// SCREEN: ui_ScreenCATBOX
+void ui_ScreenCATBOX_screen_init(void);
+void ui_event_ScreenCATBOX(lv_event_t * e);
+extern lv_obj_t * ui_ScreenCATBOX;
 extern lv_obj_t * ui_Label2;
 extern lv_obj_t * ui_Panel6;
 extern lv_obj_t * ui_Label39;
@@ -150,6 +157,26 @@ extern lv_obj_t * ui_Roller2;
 extern lv_obj_t * ui_Switch1;
 void ui_event_Keyboard2(lv_event_t * e);
 extern lv_obj_t * ui_Keyboard2;
+// SCREEN: ui_ScreenSetUpdate
+void ui_ScreenSetUpdate_screen_init(void);
+void ui_event_ScreenSetUpdate(lv_event_t * e);
+extern lv_obj_t * ui_ScreenSetUpdate;
+extern lv_obj_t * ui_Label7;
+extern lv_obj_t * ui_Label37;
+extern lv_obj_t * ui_Label38;
+extern lv_obj_t * ui_Switch3;
+extern lv_obj_t * ui_Label43;
+extern lv_obj_t * ui_Label40;
+void ui_event_Button6(lv_event_t * e);
+extern lv_obj_t * ui_Button6;
+extern lv_obj_t * ui_Label42;
+extern lv_obj_t * ui_Label44;
+// SCREEN: ui_ScreenSetLAW
+void ui_ScreenSetLAW_screen_init(void);
+void ui_event_ScreenSetLAW(lv_event_t * e);
+extern lv_obj_t * ui_ScreenSetLAW;
+extern lv_obj_t * ui_Label41;
+extern lv_obj_t * ui_TextArea1;
 extern lv_obj_t * ui____initial_actions0;
 
 

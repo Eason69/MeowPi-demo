@@ -216,15 +216,15 @@ void HidController::eventListening() {
 
 void HidController::keyboardEventHandle(struct input_event &ev) {
     if (ev.type == EV_KEY) {
-        if (is_kb && kmnetwork::GetInstance().iskeyboardBlocked(ev.code)) {
+        if (is_kb && catnetwork::GetInstance().iskeyboardBlocked(ev.code)) {
             m_keyboard.passThrough(ev.code, static_cast<uint8_t>(ev.value));
         }
-        kmnetwork::GetInstance().keyboard_listen(ev);
+        catnetwork::GetInstance().keyboard_listen(ev);
     }
 }
 
 void HidController::mouseEventHandle(struct input_event &ev) {
-    if(is_kb && kmnetwork::GetInstance().ismouseBlocked(ev.code)) {
+    if(is_kb && catnetwork::GetInstance().ismouseBlocked(ev.code)) {
         if (ev.type == EV_REL) {
             if (ev.code == REL_WHEEL) { //滚轮
                 m_mouse.passThrough(static_cast<uint8_t>(ev.code), static_cast<uint8_t>(ev.value));
@@ -237,5 +237,5 @@ void HidController::mouseEventHandle(struct input_event &ev) {
             m_mouse.passThrough(static_cast<uint8_t>(ev.code), static_cast<uint8_t>(ev.value));
         }
     }
-    kmnetwork::GetInstance().mouse_listen(ev);
+    catnetwork::GetInstance().mouse_listen(ev);
 }
