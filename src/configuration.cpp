@@ -222,7 +222,7 @@ void Configuration::set_ip_address(const char* ip_address) {
 
 void Configuration::disp_set_brightness(int brightness) {
     int ioctlParam[3]={0};
-    if (brightness < 20 || brightness > 255) {
+    if (brightness > 255) {
         std::cerr << "brightness不正确 "<< std::endl;
         return;
     }

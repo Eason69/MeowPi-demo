@@ -25,9 +25,9 @@ void ui_ScreenSetLAW_screen_init(void)
     lv_obj_set_style_text_font(ui_Label41, &ui_font_FontChina48, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_TextArea1 = lv_textarea_create(ui_ScreenSetLAW);
-    lv_obj_set_width(ui_TextArea1, 460);
-    lv_obj_set_height(ui_TextArea1, 680);
-    lv_obj_set_x(ui_TextArea1, 10);
+    lv_obj_set_width(ui_TextArea1, 480);
+    lv_obj_set_height(ui_TextArea1, 700);
+    lv_obj_set_x(ui_TextArea1, 0);
     lv_obj_set_y(ui_TextArea1, 100);
     lv_obj_set_align(ui_TextArea1, LV_ALIGN_CENTER);
     lv_textarea_set_text(ui_TextArea1,

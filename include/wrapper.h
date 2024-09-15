@@ -17,6 +17,8 @@ void wrapper_KmnetManage(bool state);
 
 void wrapper_KeyManage(bool state);
 
+void wrapper_hidupdata();
+
 #ifdef __cplusplus
 }
 #endif

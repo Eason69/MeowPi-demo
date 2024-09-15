@@ -79,14 +79,14 @@ void ui_ScreenHome_screen_init(void)
     lv_obj_set_x(ui_Panel5, -200);
     lv_obj_set_y(ui_Panel5, -10);
     lv_obj_set_align(ui_Panel5, LV_ALIGN_CENTER);
-    lv_obj_clear_flag(ui_Panel5, LV_OBJ_FLAG_CLICKABLE | LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    lv_obj_clear_flag(ui_Panel5, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
     lv_obj_set_style_bg_color(ui_Panel5, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_opa(ui_Panel5, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_border_color(ui_Panel5, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_border_opa(ui_Panel5, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_Image4 = lv_img_create(ui_Panel5);
-    lv_img_set_src(ui_Image4, &ui_img_iconmusic_png);
+    lv_img_set_src(ui_Image4, &ui_img_iconscreen_png);
     lv_obj_set_width(ui_Image4, LV_SIZE_CONTENT);   /// 1
     lv_obj_set_height(ui_Image4, LV_SIZE_CONTENT);    /// 1
     lv_obj_set_x(ui_Image4, 0);
@@ -101,7 +101,7 @@ void ui_ScreenHome_screen_init(void)
     lv_obj_set_x(ui_Label4, 0);
     lv_obj_set_y(ui_Label4, 50);
     lv_obj_set_align(ui_Label4, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_Label4, "音乐");
+    lv_label_set_text(ui_Label4, "熄屏");
     ui_object_set_themeable_style_property(ui_Label4, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_TEXT_COLOR,
                                            _ui_theme_color_white);
     ui_object_set_themeable_style_property(ui_Label4, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_TEXT_OPA,
@@ -121,7 +121,7 @@ void ui_ScreenHome_screen_init(void)
     lv_obj_set_style_border_opa(ui_Panel7, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_Image5 = lv_img_create(ui_Panel7);
-    lv_img_set_src(ui_Image5, &ui_img_iconkmbox_png);
+    lv_img_set_src(ui_Image5, &ui_img_iconcatbox_png);
     lv_obj_set_width(ui_Image5, LV_SIZE_CONTENT);   /// 1
     lv_obj_set_height(ui_Image5, LV_SIZE_CONTENT);    /// 1
     lv_obj_set_x(ui_Image5, 0);
@@ -284,7 +284,9 @@ void ui_ScreenHome_screen_init(void)
     lv_obj_set_style_bg_color(ui_Slider1, lv_color_hex(0xFFFFFF), LV_PART_KNOB | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_opa(ui_Slider1, 0, LV_PART_KNOB | LV_STATE_DEFAULT);
 
+    lv_obj_add_event_cb(ui_Slider1, ui_event_Slider1, LV_EVENT_ALL, NULL);
     lv_obj_add_event_cb(ui_Panel1, ui_event_Panel1, LV_EVENT_ALL, NULL);
+    lv_obj_add_event_cb(ui_Panel5, ui_event_Panel5, LV_EVENT_ALL, NULL);
     lv_obj_add_event_cb(ui_Panel7, ui_event_Panel7, LV_EVENT_ALL, NULL);
     lv_obj_add_event_cb(ui_Button1, ui_event_Button1, LV_EVENT_ALL, NULL);
     lv_obj_add_event_cb(ui_Button3, ui_event_Button3, LV_EVENT_ALL, NULL);

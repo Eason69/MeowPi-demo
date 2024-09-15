@@ -40,8 +40,6 @@ public:
 
     void set_is_catnet(bool state){is_catnet = state;}
 
-    void my_decrypt(unsigned char* input, unsigned char* key);
-
 private:
 
     catnetwork();
@@ -50,7 +48,7 @@ private:
 
     void net_receive();
 
-    void net_handle();
+    void net_handle(client_tx data);
 
     void net_hid_send();
 
@@ -76,6 +74,9 @@ private:
 
     client_tx tx;							//发送的内容
     client_tx rx;							//接收的内容
+    client_tx rx_enc;
+
+    uint8_t enc_key[16] = { 0 };
 
     standard_mouse_report_t		mouse_report;   //硬件鼠标消息
     standard_keyboard_report_t	keyboard_report;//硬件键盘消息

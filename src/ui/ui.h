@@ -38,6 +38,7 @@ void ui_event_Panel1(lv_event_t * e);
 extern lv_obj_t * ui_Panel1;
 extern lv_obj_t * ui_Image1;
 extern lv_obj_t * ui_Label1;
+void ui_event_Panel5(lv_event_t * e);
 extern lv_obj_t * ui_Panel5;
 extern lv_obj_t * ui_Image4;
 extern lv_obj_t * ui_Label4;
@@ -177,14 +178,19 @@ void ui_event_ScreenSetLAW(lv_event_t * e);
 extern lv_obj_t * ui_ScreenSetLAW;
 extern lv_obj_t * ui_Label41;
 extern lv_obj_t * ui_TextArea1;
+// SCREEN: ui_ScreenScreen
+void ui_ScreenScreen_screen_init(void);
+extern lv_obj_t * ui_ScreenScreen;
+void ui_event_Panel2(lv_event_t * e);
+extern lv_obj_t * ui_Panel2;
 extern lv_obj_t * ui____initial_actions0;
 
 
 LV_IMG_DECLARE(ui_img_bootlogo_png);    // assets/bootlogo.png
 LV_IMG_DECLARE(ui_img_wallpaper1_png);    // assets/wallpaper1.png
 LV_IMG_DECLARE(ui_img_iconset_png);    // assets/iconSet.png
-LV_IMG_DECLARE(ui_img_iconmusic_png);    // assets/iconMusic.png
-LV_IMG_DECLARE(ui_img_iconkmbox_png);    // assets/iconKMbox.png
+LV_IMG_DECLARE(ui_img_iconscreen_png);    // assets/iconScreen.png
+LV_IMG_DECLARE(ui_img_iconcatbox_png);    // assets/iconCATbox.png
 LV_IMG_DECLARE(ui_img_dropkey_png);    // assets/dropKey.png
 LV_IMG_DECLARE(ui_img_dropkmbox_png);    // assets/dropKMBOX.png
 LV_IMG_DECLARE(ui_img_492698769);    // assets/brightness-.png

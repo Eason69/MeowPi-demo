@@ -43,4 +43,10 @@ extern "C" {
     void wrapper_KeyManage(bool state) {
         HidController::GetInstance().set_is_kb(state);
     }
+
+    void wrapper_hidupdata() {
+        uint8_t hid_data[4] = {0xac,0xca,0x01,0x02};
+        Uart::GetInstance().write(hid_data, sizeof(hid_data));
+    }
+
 }

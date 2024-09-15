@@ -34,6 +34,8 @@ void catnetwork::net_receive() {
     addrSrv.sin_port = htons(server_port);
 
     server_uuid = Configuration::GetInstance().uuid;
+    enc_key[0] = server_uuid >> 24; enc_key[1] = server_uuid >> 16;
+    enc_key[2] = server_uuid >> 8; enc_key[3] = server_uuid  >> 0;
 
     // 绑定socket
     if (bind(sockServerfd, (const struct sockaddr *)&addrSrv, sizeof(addrSrv)) < 0) {
@@ -66,128 +68,135 @@ void catnetwork::net_receive() {
             }
         }
         //std::cout << "[NET] Received " << len << " bytes from client: " << inet_ntoa(addrClient.sin_addr) << std::endl;
-        net_handle();
+        if(rx.head.mac == server_uuid){
+            net_handle(rx);
+        }
+        else {
+            memcpy(&rx_enc, &rx, sizeof(rx));
+            if(rx_enc.head.mac == server_uuid){
+                net_handle(rx_enc);
+            }
+            else {
+                std::cerr << "[NET] UUID错误" << std::endl;
+            }
+        }
+
     }
     close(sockServerfd);
 }
 
-void catnetwork::net_handle(){
-    if(rx.head.mac == server_uuid){
-        switch(rx.head.cmd) {
-            case cmd_connect:
-                addrServer.sin_family = AF_INET;
-                addrServer.sin_addr = addrClient.sin_addr;
-                std::cout << "[KMBOX] 连接成功" << std::endl;
-                break;
+void catnetwork::net_handle(client_tx data){
+    switch(data.head.cmd) {
+        case cmd_connect:
+            addrServer.sin_family = AF_INET;
+            addrServer.sin_addr = addrClient.sin_addr;
+            std::cout << "[KMBOX] 连接成功" << std::endl;
+            break;
 
-            case cmd_monitor:
-                if ((uint16_t) rx.head.rand) {
-                    addrServer.sin_port = htons((uint16_t) rx.head.rand);
-                    is_listen = true;
-                    std::cout << "[KMBOX] 开始监听输出 端口:" << std::dec << ntohs(addrServer.sin_port) << std::endl;
-                } else {
-                    is_listen = false;
-                    std::cout << "[KMBOX] 关闭监听输出" << std::endl;
-                }
-                break;
+        case cmd_monitor:
+            if ((uint16_t) data.head.rand) {
+                addrServer.sin_port = htons((uint16_t) data.head.rand);
+                is_listen = true;
+                std::cout << "[KMBOX] 开始监听输出 端口:" << std::dec << ntohs(addrServer.sin_port) << std::endl;
+            } else {
+                is_listen = false;
+                std::cout << "[KMBOX] 关闭监听输出" << std::endl;
+            }
+            break;
 
-            case cmd_mouse_move:
-                m_mouse.passThrough((uint8_t) REL_Y, (uint8_t) (rx.cmd_mouse.y >> 8), (uint8_t) (rx.cmd_mouse.y));
-                m_mouse.passThrough((uint8_t) REL_X, (uint8_t) (rx.cmd_mouse.x >> 8), (uint8_t) (rx.cmd_mouse.x));
-                break;
+        case cmd_mouse_move:
+            m_mouse.passThrough((uint8_t) REL_Y, (uint8_t) (data.cmd_mouse.y >> 8), (uint8_t) (data.cmd_mouse.y));
+            m_mouse.passThrough((uint8_t) REL_X, (uint8_t) (data.cmd_mouse.x >> 8), (uint8_t) (data.cmd_mouse.x));
+            break;
 
-            case cmd_bazerMove:
-                mouse_move_beizer(rx.cmd_mouse.x, rx.cmd_mouse.y, rx.head.rand, rx.cmd_mouse.point[0],
-                                  rx.cmd_mouse.point[1], rx.cmd_mouse.point[2], rx.cmd_mouse.point[3]);
-                break;
+        case cmd_bazerMove:
+            mouse_move_beizer(data.cmd_mouse.x, rx.cmd_mouse.y, data.head.rand, data.cmd_mouse.point[0],
+                              data.cmd_mouse.point[1], data.cmd_mouse.point[2], data.cmd_mouse.point[3]);
+            break;
 
-            case cmd_mask_mouse:
-                if (rx.head.rand & 0xff00) {
-                    blocked_keyboard.insert(findKeyByValue(rx.head.rand >> 8));
-                }
-                if (rx.head.rand & 0xff) {
-                    for (int i = 0; i < 5; i++) {
-                        if (rx.head.rand & (1 << i))
-                            blocked_mouse.insert(BTN_LEFT + i);
-                        else
-                            blocked_mouse.erase(BTN_LEFT + i);
-                    }
-                    if (rx.head.rand & 0x20) //x
-                        blocked_mouse.insert(REL_X);
+        case cmd_mask_mouse:
+            if (data.head.rand & 0xff00) {
+                blocked_keyboard.insert(findKeyByValue(data.head.rand >> 8));
+            }
+            if (data.head.rand & 0xff) {
+                for (int i = 0; i < 5; i++) {
+                    if (data.head.rand & (1 << i))
+                        blocked_mouse.insert(BTN_LEFT + i);
                     else
-                        blocked_mouse.erase(REL_X);
-                    if (rx.head.rand & 0x40) //y
-                        blocked_mouse.insert(REL_Y);
-                    else
-                        blocked_mouse.erase(REL_Y);
-                    if (rx.head.rand & 0x80) //滚轮
-                        blocked_mouse.insert(REL_WHEEL);
-                    else
-                        blocked_mouse.erase(REL_WHEEL);
+                        blocked_mouse.erase(BTN_LEFT + i);
                 }
-                break;
-
-            case cmd_unmask_all:
-                if (rx.head.rand == 0) {
-                    blocked_mouse.clear();
-                    blocked_keyboard.clear();
-                } else {
-                    blocked_keyboard.erase(findKeyByValue(rx.head.rand >> 8));
-                }
-                break;
-
-            case cmd_mouse_left:
-                if (rx.cmd_mouse.button & 0x01)
-                    m_mouse.passThrough((uint8_t) BTN_LEFT, 1);
+                if (data.head.rand & 0x20) //x
+                    blocked_mouse.insert(REL_X);
                 else
-                    m_mouse.passThrough((uint8_t) BTN_LEFT, 0);
-                break;
-
-            case cmd_mouse_right:
-                if (rx.cmd_mouse.button & 0x02)
-                    m_mouse.passThrough((uint8_t) BTN_RIGHT, 1);
+                    blocked_mouse.erase(REL_X);
+                if (data.head.rand & 0x40) //y
+                    blocked_mouse.insert(REL_Y);
                 else
-                    m_mouse.passThrough((uint8_t) BTN_RIGHT, 0);
-                break;
+                    blocked_mouse.erase(REL_Y);
+                if (data.head.rand & 0x80) //滚轮
+                    blocked_mouse.insert(REL_WHEEL);
+                else
+                    blocked_mouse.erase(REL_WHEEL);
+            }
+            break;
 
-            case cmd_mouse_middle:
-                m_mouse.passThrough((uint8_t) REL_WHEEL, rx.cmd_mouse.wheel);
-                break;
+        case cmd_unmask_all:
+            if (data.head.rand == 0) {
+                blocked_mouse.clear();
+                blocked_keyboard.clear();
+            } else {
+                blocked_keyboard.erase(findKeyByValue(data.head.rand >> 8));
+            }
+            break;
 
-            case cmd_mouse_wheel:
-                for(int i=0; i<5; i++){
-                    if(rx.cmd_mouse.button & (1<<i))
-                        m_mouse.passThrough((uint8_t) BTN_LEFT+i, 1);
-                    else
-                        m_mouse.passThrough((uint8_t) BTN_LEFT+i, 0);
-                }
-                m_mouse.passThrough((uint8_t) REL_Y, (uint8_t) (rx.cmd_mouse.y >> 8), (uint8_t) (rx.cmd_mouse.y));
-                m_mouse.passThrough((uint8_t) REL_X, (uint8_t) (rx.cmd_mouse.x >> 8), (uint8_t) (rx.cmd_mouse.x));
-                m_mouse.passThrough((uint8_t) REL_WHEEL, rx.cmd_mouse.wheel);
-                break;
+        case cmd_mouse_left:
+            if (data.cmd_mouse.button & 0x01)
+                m_mouse.passThrough((uint8_t) BTN_LEFT, 1);
+            else
+                m_mouse.passThrough((uint8_t) BTN_LEFT, 0);
+            break;
 
-            case cmd_keyboard_all:
-                handleKeyChanges(rx.cmd_keyboard);
-                break;
+        case cmd_mouse_right:
+            if (data.cmd_mouse.button & 0x02)
+                m_mouse.passThrough((uint8_t) BTN_RIGHT, 1);
+            else
+                m_mouse.passThrough((uint8_t) BTN_RIGHT, 0);
+            break;
 
-            case cmd_mouse_automove:
-                //只是简单的分段移动，待完善
-                mouse_automove(rx.cmd_mouse.x, rx.cmd_mouse.y, rx.head.rand);
-                break;
+        case cmd_mouse_middle:
+            m_mouse.passThrough((uint8_t) REL_WHEEL, data.cmd_mouse.wheel);
+            break;
 
-            default:
-                std::cerr << "[KMBOX] 非命令" << std::endl;
-                break;
-        }
-        // 发送响应回客户端
-        int err = sendto(sockServerfd, (char*)&rx, len, MSG_CONFIRM, (const struct sockaddr *) &addrClient, sizeof(addrClient));
-        if (err < 0) {
-            std::cerr << "[NET] 发送失败" << std::endl;
-        }
+        case cmd_mouse_wheel:
+            for(int i=0; i<5; i++){
+                if(data.cmd_mouse.button & (1<<i))
+                    m_mouse.passThrough((uint8_t) BTN_LEFT+i, 1);
+                else
+                    m_mouse.passThrough((uint8_t) BTN_LEFT+i, 0);
+            }
+            m_mouse.passThrough((uint8_t) REL_Y, (uint8_t) (data.cmd_mouse.y >> 8), (uint8_t) (data.cmd_mouse.y));
+            m_mouse.passThrough((uint8_t) REL_X, (uint8_t) (data.cmd_mouse.x >> 8), (uint8_t) (data.cmd_mouse.x));
+            m_mouse.passThrough((uint8_t) REL_WHEEL, data.cmd_mouse.wheel);
+            break;
 
-    }else
-        std::cerr << "[NET] UUID错误" << std::endl;
+        case cmd_keyboard_all:
+            handleKeyChanges(data.cmd_keyboard);
+            break;
 
+        case cmd_mouse_automove:
+            //只是简单的分段移动，待完善
+            mouse_automove(data.cmd_mouse.x, data.cmd_mouse.y, data.head.rand);
+            break;
+
+        default:
+            std::cerr << "[KMBOX] 非命令" << std::endl;
+            break;
+    }
+    // 发送响应回客户端
+    int err = sendto(sockServerfd, (char*)&data, len, MSG_CONFIRM, (const struct sockaddr *) &addrClient, sizeof(addrClient));
+    if (err < 0) {
+        std::cerr << "[NET] 发送失败" << std::endl;
+    }
 }
 
 void catnetwork::mouse_automove(int x, int y, int ms){
@@ -425,26 +434,4 @@ bool catnetwork::iskeyboardBlocked(int key){
 
 bool catnetwork::ismouseBlocked(int key){
     return blocked_mouse.find(key) == blocked_mouse.end();
-}
-
-void catnetwork::my_decrypt(unsigned char* input, unsigned char* key)
-{
-    unsigned char n = 32;
-    unsigned long* a1 = (unsigned long*)input;
-    unsigned long* a2 = (unsigned long*)key;
-    unsigned long a3 = a1[n - 1], a4 = a1[0], sum = 0xE3779B90;
-    unsigned char a5, a6, a7;
-    a7 = 6; // 加密时的轮数
-    while (a7-- > 0)
-    {
-        a5 = sum >> 2 & 3;
-        for (a6 = n - 1; a6 > 0; a6--)
-        {
-            a4 = a1[a6 - 1];
-            a3 = a1[a6] -= (a3 >> 5 ^ a4 << 2) + (a4 >> 3 ^ a3 << 4) ^ (sum ^ a4) + (a2[a6 & 3 ^ a5] ^ a3);
-        }
-        a4 = a1[n - 1];
-        a3 = a1[0] -= (a3 >> 5 ^ a4 << 2) + (a4 >> 3 ^ a3 << 4) ^ (sum ^ a4) + (a2[a6 & 3 ^ a5] ^ a3);
-        sum -= 2654435769; // 每轮减去加密时增加的常量
-    }
 }
