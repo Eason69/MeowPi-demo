@@ -30,7 +30,7 @@ extern "C" {
         Configuration::GetInstance().config_kmport = port_int;
     }
 
-    void wrapper_KmnetManage(bool state) {
+    void wrapper_Managebox(bool state) {
         if(state){
             catnetwork::GetInstance().set_is_catnet(false);
             catnetwork::GetInstance().netStart();
@@ -38,6 +38,11 @@ extern "C" {
             catnetwork::GetInstance().set_is_catnet(true);
             catnetwork::GetInstance().neteJoin();
         }
+    }
+
+    void wrapper_encbox(bool state) {
+        Configuration::GetInstance().config_encbox = state;
+        Configuration::GetInstance().setConfigValue("Kmbox.encry", state);
     }
 
     void wrapper_KeyManage(bool state) {

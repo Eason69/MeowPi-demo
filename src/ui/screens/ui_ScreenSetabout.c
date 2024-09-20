@@ -83,7 +83,7 @@ void ui_ScreenSetabout_screen_init(void)
     lv_obj_set_x(ui_Label26, -253);
     lv_obj_set_y(ui_Label26, 72);
     lv_obj_set_align(ui_Label26, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_Label26, "V1.1");
+    lv_label_set_text(ui_Label26, "V1.2");
     lv_obj_set_style_text_font(ui_Label26, &ui_font_FontChina24, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_Label27 = lv_label_create(ui_Panel14);

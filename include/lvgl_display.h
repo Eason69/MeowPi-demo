@@ -4,7 +4,6 @@
 #include <thread>
 #include <linux/input.h>
 #include "lvgl.h"
-#include "lv_demos.h"
 #include "sunxifb.h"
 #include "evdev.h"
 #include "configuration.h"

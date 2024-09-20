@@ -100,6 +100,16 @@ void Configuration::loadConfig() {
         config_modified = true;
     }
 
+    // 读取 Kmbox.encry
+    if (config_lookup_int(&cfg, "Kmbox.encry", &config_encbox)) {
+        std::cout << "Kmbox.encry = " << config_encbox << std::endl;
+    } else {
+        std::cout << "未找到 Kmbox.encry，创建默认值 " << 0 << std::endl;
+        config_setting_t *encbox_setting = config_setting_add(kmbox, "encry", CONFIG_TYPE_INT);
+        config_setting_set_int(encbox_setting, 0);
+        config_modified = true;
+    }
+
     if (config_modified) {
         // 如果有新的配置项被创建，则保存配置文件
         if (!config_write_file(&cfg, filename)) {
@@ -136,6 +146,8 @@ void Configuration::save_default_config() {
     config_setting_t *kmbox = config_setting_add(root, "Kmbox", CONFIG_TYPE_GROUP);
     config_setting_t *port_setting = config_setting_add(kmbox, "port", CONFIG_TYPE_INT);
     config_setting_set_int(port_setting, DEFAULT_KMPORT);
+    config_setting_t *encbox_setting = config_setting_add(kmbox, "encry", CONFIG_TYPE_INT);
+    config_setting_set_int(encbox_setting, 0);
 
     // Write the file
     if (!config_write_file(&cfg, filename)) {

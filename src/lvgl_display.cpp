@@ -103,5 +103,10 @@ void Lvgl::parameter_set(){
     const char* cstr_uuid = str_uuid.c_str();
     lv_label_set_text(ui_Label33, cstr_uuid);
     std::cout << "UUID as uint32_t: " << std::hex << std::setw(8) << std::setfill('0') << cstr_uuid << std::endl;
+    //KMBOX encry
+    if(Configuration::GetInstance().config_encbox)
+        lv_obj_add_state(ui_Switch4, LV_STATE_CHECKED);
+    else
+        lv_obj_clear_state(ui_Switch4, LV_STATE_CHECKED);
 }
 

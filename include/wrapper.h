@@ -13,7 +13,9 @@ void wrapper_SetConfigIP(int value1, int value2);
 
 void wrapper_SetKmPort(const char* port);
 
-void wrapper_KmnetManage(bool state);
+void wrapper_Managebox(bool state);
+
+void wrapper_encbox(bool state);
 
 void wrapper_KeyManage(bool state);
 

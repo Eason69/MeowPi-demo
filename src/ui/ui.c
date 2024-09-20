@@ -159,9 +159,9 @@ void ui_event_TextArea2(lv_event_t * e);
 lv_obj_t * ui_TextArea2;
 lv_obj_t * ui_Label23;
 lv_obj_t * ui_Label33;
-lv_obj_t * ui_Label34;
 lv_obj_t * ui_Roller2;
-lv_obj_t * ui_Switch1;
+lv_obj_t * ui_Label45;
+lv_obj_t * ui_Switch4;
 void ui_event_Keyboard2(lv_event_t * e);
 lv_obj_t * ui_Keyboard2;
 
@@ -195,6 +195,7 @@ void ui_ScreenScreen_screen_init(void);
 lv_obj_t * ui_ScreenScreen;
 void ui_event_Panel2(lv_event_t * e);
 lv_obj_t * ui_Panel2;
+lv_obj_t * ui_Label34;
 lv_obj_t * ui____initial_actions0;
 const lv_img_dsc_t * ui_imgset_small[6] = {&ui_img_small1_png, &ui_img_small2_png, &ui_img_small3_png, &ui_img_small4_png, &ui_img_small5_png, &ui_img_small6_png};
 const lv_img_dsc_t * ui_imgset_wallpaper[6] = {&ui_img_wallpaper1_png, &ui_img_wallpaper2_png, &ui_img_wallpaper3_png, &ui_img_wallpaper4_png, &ui_img_wallpaper5_png, &ui_img_wallpaper6_png};
@@ -368,17 +369,12 @@ void ui_event_Slider1(lv_event_t * e)
     wrapper_SetConfigValue("General.backlight",brightness);
 }
 
-void ui_event_Switch1(lv_event_t * e)
+void ui_event_Switch4(lv_event_t * e)
 {
     lv_event_code_t code = lv_event_get_code(e);
     lv_obj_t * obj = lv_event_get_target(e);
     if(code == LV_EVENT_VALUE_CHANGED) {
-        is_Button3 = lv_obj_has_state(obj, LV_STATE_CHECKED);
-        if(is_Button3)
-            lv_obj_set_style_bg_color(ui_Button3, lv_color_hex(0x87CEFA), LV_PART_MAIN | LV_STATE_DEFAULT);
-        else
-            lv_obj_set_style_bg_color(ui_Button3, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
-        wrapper_KmnetManage(is_Button3);
+        wrapper_encbox(lv_obj_has_state(obj, LV_STATE_CHECKED));
     }
 }
 
@@ -458,13 +454,11 @@ void ui_event_Button3(lv_event_t * e)
         if(is_Button3) {
             is_Button3 = false;
             lv_obj_set_style_bg_color(ui_Button3, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
-            lv_obj_clear_state(ui_Switch1, LV_STATE_CHECKED);
         }else{
             is_Button3 = true;
             lv_obj_set_style_bg_color(ui_Button3, lv_color_hex(0x87CEFA), LV_PART_MAIN | LV_STATE_DEFAULT);
-            lv_obj_add_state(ui_Switch1, LV_STATE_CHECKED);
         }
-        wrapper_KmnetManage(is_Button3);
+        wrapper_Managebox(is_Button3);
     }
 }
 void ui_event_ScreenSet(lv_event_t * e)

@@ -62,6 +62,10 @@ private:
 
     std::string exec(const char* cmd);
 
+    void AESDecrypt(const char* encryptedData, char* decryptedData, size_t paddedSize);
+
+    const char* expandTo16Bytes(int mac);
+
 private:
 
     std::thread network_thread;
@@ -75,8 +79,6 @@ private:
     client_tx tx;							//发送的内容
     client_tx rx;							//接收的内容
     client_tx rx_enc;
-
-    uint8_t enc_key[16] = { 0 };
 
     standard_mouse_report_t		mouse_report;   //硬件鼠标消息
     standard_keyboard_report_t	keyboard_report;//硬件键盘消息
@@ -100,6 +102,8 @@ private:
     bool is_listen = false;
 
     bool is_catnet = false;
+
+    const char* encry_key;
 
 };
 

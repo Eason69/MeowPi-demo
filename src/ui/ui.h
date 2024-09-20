@@ -18,6 +18,7 @@ extern "C" {
 #include "ui_themes.h"
 
 void ui_event_Slider1(lv_event_t * e); //背光
+void ui_event_Switch4(lv_event_t * e);
 void LOGO_Animation(lv_obj_t * TargetObject, int delay);
 void dropdown_Animation(lv_obj_t * TargetObject, int delay);
 void deopupward_Animation(lv_obj_t * TargetObject, int delay);
@@ -153,9 +154,9 @@ void ui_event_TextArea2(lv_event_t * e);
 extern lv_obj_t * ui_TextArea2;
 extern lv_obj_t * ui_Label23;
 extern lv_obj_t * ui_Label33;
-extern lv_obj_t * ui_Label34;
 extern lv_obj_t * ui_Roller2;
-extern lv_obj_t * ui_Switch1;
+extern lv_obj_t * ui_Label45;
+extern lv_obj_t * ui_Switch4;
 void ui_event_Keyboard2(lv_event_t * e);
 extern lv_obj_t * ui_Keyboard2;
 // SCREEN: ui_ScreenSetUpdate
@@ -183,6 +184,7 @@ void ui_ScreenScreen_screen_init(void);
 extern lv_obj_t * ui_ScreenScreen;
 void ui_event_Panel2(lv_event_t * e);
 extern lv_obj_t * ui_Panel2;
+extern lv_obj_t * ui_Label34;
 extern lv_obj_t * ui____initial_actions0;
 
 

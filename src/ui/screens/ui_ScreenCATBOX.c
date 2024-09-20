@@ -9,10 +9,18 @@ void ui_ScreenCATBOX_screen_init(void)
 {
     ui_ScreenCATBOX = lv_obj_create(NULL);
     lv_obj_clear_flag(ui_ScreenCATBOX, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    lv_obj_set_flex_flow(ui_ScreenCATBOX, LV_FLEX_FLOW_ROW_WRAP);
+    lv_obj_set_flex_align(ui_ScreenCATBOX, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER);
     ui_object_set_themeable_style_property(ui_ScreenCATBOX, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_BG_COLOR,
                                            _ui_theme_color_BackgroundGrey);
     ui_object_set_themeable_style_property(ui_ScreenCATBOX, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_BG_OPA,
                                            _ui_theme_alpha_BackgroundGrey);
+    lv_obj_set_style_pad_left(ui_ScreenCATBOX, 100, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_right(ui_ScreenCATBOX, 100, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_top(ui_ScreenCATBOX, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_bottom(ui_ScreenCATBOX, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_row(ui_ScreenCATBOX, 40, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_column(ui_ScreenCATBOX, 40, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_Label2 = lv_label_create(ui_ScreenCATBOX);
     lv_obj_set_width(ui_Label2, LV_SIZE_CONTENT);   /// 1
@@ -21,13 +29,14 @@ void ui_ScreenCATBOX_screen_init(void)
     lv_obj_set_y(ui_Label2, -340);
     lv_obj_set_align(ui_Label2, LV_ALIGN_CENTER);
     lv_label_set_text(ui_Label2, "CATBOX NET");
+    lv_obj_add_flag(ui_Label2, LV_OBJ_FLAG_IGNORE_LAYOUT);     /// Flags
     lv_obj_set_style_text_font(ui_Label2, &ui_font_FontChina48, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_Panel6 = lv_obj_create(ui_ScreenCATBOX);
     lv_obj_set_width(ui_Panel6, 400);
     lv_obj_set_height(ui_Panel6, 200);
     lv_obj_set_x(ui_Panel6, 0);
-    lv_obj_set_y(ui_Panel6, -125);
+    lv_obj_set_y(ui_Panel6, -150);
     lv_obj_set_align(ui_Panel6, LV_ALIGN_CENTER);
     lv_obj_set_flex_flow(ui_Panel6, LV_FLEX_FLOW_ROW_WRAP);
     lv_obj_set_flex_align(ui_Panel6, LV_FLEX_ALIGN_SPACE_BETWEEN, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER);
@@ -103,32 +112,34 @@ void ui_ScreenCATBOX_screen_init(void)
     lv_label_set_text(ui_Label33, "00000000");
     lv_obj_set_style_text_font(ui_Label33, &ui_font_FontChina24, LV_PART_MAIN | LV_STATE_DEFAULT);
 
-    ui_Label34 = lv_label_create(ui_ScreenCATBOX);
-    lv_obj_set_width(ui_Label34, LV_SIZE_CONTENT);   /// 1
-    lv_obj_set_height(ui_Label34, LV_SIZE_CONTENT);    /// 1
-    lv_obj_set_x(ui_Label34, 0);
-    lv_obj_set_y(ui_Label34, 40);
-    lv_obj_set_align(ui_Label34, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_Label34, "move_auto移动方式");
-    lv_obj_set_style_text_font(ui_Label34, &ui_font_FontChina24, LV_PART_MAIN | LV_STATE_DEFAULT);
-
     ui_Roller2 = lv_roller_create(ui_ScreenCATBOX);
     lv_roller_set_options(ui_Roller2, "线性移动", LV_ROLLER_MODE_NORMAL);
-    lv_obj_set_width(ui_Roller2, 200);
+    lv_obj_set_width(ui_Roller2, 280);
     lv_obj_set_height(ui_Roller2, 100);
     lv_obj_set_x(ui_Roller2, 0);
-    lv_obj_set_y(ui_Roller2, 130);
+    lv_obj_set_y(ui_Roller2, 90);
     lv_obj_set_align(ui_Roller2, LV_ALIGN_CENTER);
     lv_obj_set_style_text_font(ui_Roller2, &ui_font_FontChina24, LV_PART_MAIN | LV_STATE_DEFAULT);
 
-    ui_Switch1 = lv_switch_create(ui_ScreenCATBOX);
-    lv_obj_set_width(ui_Switch1, 100);
-    lv_obj_set_height(ui_Switch1, 50);
-    lv_obj_set_x(ui_Switch1, 0);
-    lv_obj_set_y(ui_Switch1, 250);
-    lv_obj_set_align(ui_Switch1, LV_ALIGN_CENTER);
-    lv_obj_add_state(ui_Switch1, LV_STATE_CHECKED);       /// States
+    ui_Label45 = lv_label_create(ui_ScreenCATBOX);
+    lv_obj_set_width(ui_Label45, LV_SIZE_CONTENT);   /// 1
+    lv_obj_set_height(ui_Label45, LV_SIZE_CONTENT);    /// 1
+    lv_obj_set_x(ui_Label45, -324);
+    lv_obj_set_y(ui_Label45, 312);
+    lv_obj_set_align(ui_Label45, LV_ALIGN_CENTER);
+    lv_label_set_text(ui_Label45, "加密");
+    lv_obj_set_style_text_font(ui_Label45, &ui_font_FontChina24, LV_PART_MAIN | LV_STATE_DEFAULT);
 
+    ui_Switch4 = lv_switch_create(ui_ScreenCATBOX);
+    lv_obj_set_width(ui_Switch4, 120);
+    lv_obj_set_height(ui_Switch4, 60);
+    lv_obj_set_x(ui_Switch4, 36);
+    lv_obj_set_y(ui_Switch4, 204);
+    lv_obj_set_align(ui_Switch4, LV_ALIGN_CENTER);
+    lv_obj_add_state(ui_Switch4, LV_STATE_CHECKED);       /// States
+
+    lv_obj_set_style_bg_color(ui_Switch4, lv_color_hex(0xFFFFFF), LV_PART_KNOB | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_opa(ui_Switch4, 255, LV_PART_KNOB | LV_STATE_DEFAULT);
 
     ui_Keyboard2 = lv_keyboard_create(ui_ScreenCATBOX);
     lv_keyboard_set_mode(ui_Keyboard2, LV_KEYBOARD_MODE_NUMBER);
@@ -143,5 +154,6 @@ void ui_ScreenCATBOX_screen_init(void)
     lv_keyboard_set_textarea(ui_Keyboard2, ui_TextArea2);
     lv_obj_add_event_cb(ui_Keyboard2, ui_event_Keyboard2, LV_EVENT_ALL, NULL);
     lv_obj_add_event_cb(ui_ScreenCATBOX, ui_event_ScreenCATBOX, LV_EVENT_ALL, NULL);
+    lv_obj_add_event_cb(ui_Switch4, ui_event_Switch4, LV_EVENT_ALL, NULL);
 
 }

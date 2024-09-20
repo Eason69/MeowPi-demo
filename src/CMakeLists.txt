@@ -8,4 +8,4 @@ include_directories(${SOURCE_DIR}/ui)
 
 add_executable(${PROJECT_NAME} ${SOURCE_FILES})
 
-target_link_libraries(${PROJECT_NAME} PRIVATE lvgl::lvgl lvgl::demos lv_drivers config)
+target_link_libraries(${PROJECT_NAME} PRIVATE lvgl::lvgl lv_drivers config ssl crypto)

@@ -55,7 +55,7 @@ public:
     int config_bg = DEFAULT_BACKLIGHT;
     int config_wallpaper = DEFAULT_WALL;
     int config_kmport = DEFAULT_KMPORT;
-
+    int config_encbox = 0;
 };
 
 
