@@ -2,6 +2,7 @@
 #include "configuration.h"
 #include "catNetwork.h"
 #include "hid_controller.h"
+#include "ipcHelper.h"
 extern "C" {
 #include "ui.h"
 }
@@ -52,6 +53,14 @@ extern "C" {
     void wrapper_hidupdata() {
         uint8_t hid_data[4] = {0xac,0xca,0x01,0x02};
         Uart::GetInstance().write(hid_data, sizeof(hid_data));
+    }
+
+    void wrapper_start_http_server() {
+        IpcHelper::GetInstance().sender(IpcHelper::http_switch, "start");
+    }
+
+    void wrapper_stop_http_server() {
+        IpcHelper::GetInstance().sender(IpcHelper::http_switch, "stop");
     }
 
 }

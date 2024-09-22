@@ -39,7 +39,7 @@ void ui_ScreenSetUpdate_screen_init(void)
     lv_obj_set_y(ui_Label37, -302);
     lv_obj_set_align(ui_Label37, LV_ALIGN_CENTER);
     lv_label_set_text(ui_Label37,
-                      "请打开网页开关后，在浏览器输入喵喵派的IP地址进行固件上传。（开发中）");
+                      "请打开网页开关后，在浏览器输入喵喵派的IP地址进行固件上传。");
     lv_obj_set_style_text_font(ui_Label37, &ui_font_FontChina24, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_Label38 = lv_label_create(ui_ScreenSetUpdate);
@@ -118,5 +118,6 @@ void ui_ScreenSetUpdate_screen_init(void)
 
     lv_obj_add_event_cb(ui_Button6, ui_event_Button6, LV_EVENT_ALL, NULL);
     lv_obj_add_event_cb(ui_ScreenSetUpdate, ui_event_ScreenSetUpdate, LV_EVENT_ALL, NULL);
+    lv_obj_add_event_cb(ui_Switch3, ui_event_Switch3, LV_EVENT_ALL, NULL);
 
 }

@@ -21,6 +21,10 @@ void wrapper_KeyManage(bool state);
 
 void wrapper_hidupdata();
 
+void wrapper_start_http_server();
+
+void wrapper_stop_http_server();
+
 #ifdef __cplusplus
 }
 #endif

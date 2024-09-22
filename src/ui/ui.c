@@ -359,6 +359,18 @@ void gesture_Animation(lv_obj_t * TargetObject, int delay)
 }
 
 ///////////////////// FUNCTIONS ////////////////////
+void ui_event_Switch3(lv_event_t * e)
+{
+    lv_event_code_t code = lv_event_get_code(e);
+    lv_obj_t * obj = lv_event_get_target(e);
+    if(code == LV_EVENT_VALUE_CHANGED) {
+        if (lv_obj_has_state(obj, LV_STATE_CHECKED)) {
+            wrapper_start_http_server();
+        } else {
+            wrapper_stop_http_server();
+        }
+    }
+}
 bool is_Button3 = true;
 bool is_Button1 = true;
 void ui_event_Slider1(lv_event_t * e)

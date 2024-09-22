@@ -17,6 +17,7 @@ extern "C" {
 #include "ui_theme_manager.h"
 #include "ui_themes.h"
 
+void ui_event_Switch3(lv_event_t * e); //ota开关
 void ui_event_Slider1(lv_event_t * e); //背光
 void ui_event_Switch4(lv_event_t * e);
 void LOGO_Animation(lv_obj_t * TargetObject, int delay);
