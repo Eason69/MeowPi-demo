@@ -57,7 +57,7 @@ void ui_ScreenSetUpdate_screen_init(void)
     lv_obj_set_x(ui_Switch3, 1);
     lv_obj_set_y(ui_Switch3, 249);
     lv_obj_set_align(ui_Switch3, LV_ALIGN_CENTER);
-    lv_obj_add_state(ui_Switch3, LV_STATE_CHECKED);       /// States
+    lv_obj_clear_state(ui_Switch3, LV_STATE_CHECKED);
 
 
     ui_Label43 = lv_label_create(ui_ScreenSetUpdate);

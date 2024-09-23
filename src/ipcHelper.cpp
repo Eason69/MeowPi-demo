@@ -1,10 +1,9 @@
 #include <atomic>
 #include <iostream>
-#include <sys/ipc.h>
-#include <sys/msg.h>
-#include <fstream>
-#include <filesystem>
-#include <cstring>
+#include <fcntl.h>
+#include <poll.h>
+#include <unistd.h>
+#include <sys/stat.h>
 #include "ipcHelper.h"
 
 extern std::atomic<bool> is_stop;
@@ -19,56 +18,73 @@ IpcHelper::~IpcHelper() {
 };
 
 void IpcHelper::init() {
-    if (!std::filesystem::exists(msg_path)) {
-        std::ofstream outfile(msg_path);
-        if (!outfile) {
+    if (mkfifo(d_fifo_path.c_str(), 0666) == -1) {
+        if (errno != EEXIST) {
+            perror("[IpcHelper] mkfifo failed");
             return;
         }
-        outfile.close();
     }
-    key_t key = ftok(msg_path.c_str(), 99);
-    if (key == -1) {
+
+    d_fd = open(d_fifo_path.c_str(), O_RDONLY | O_NONBLOCK);
+    if (d_fd == -1) {
+        perror("open failed");
         return;
     }
-    m_msg_id = msgget(key, 0666 | IPC_CREAT);
 }
 
 void IpcHelper::unInit() const {
-    msgctl(m_msg_id, IPC_RMID, nullptr);
+    close(d_fd);
+    unlink(d_fifo_path.c_str());
 }
 
 void IpcHelper::listening() {
-//    m_thread = std::thread([this] { reader(); });
+    m_thread = std::thread([this] { reader(); });
+    m_alive_thread = std::thread([this] {
+        while (!is_stop) {
+            sender(k_alive, "I'm alive.version:" + std::string(VERSION));
+            std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+        }
+    });
 }
 
 void IpcHelper::threadJoin() {
     if (m_thread.joinable()) {
         m_thread.join();
     }
-}
-
-void IpcHelper::sender(int msg_type, const std::string& data) const {
-    message msg{};
-    msg.msg_type = msg_type;
-    strncpy(msg.msg_text, data.c_str(), sizeof(msg.msg_text) - 1);
-    msg.msg_text[sizeof(msg.msg_text) - 1] = '\0';
-
-    msgsnd(m_msg_id, &msg, sizeof(msg.msg_text), 0);
-}
-
-void IpcHelper::reader() const {
-    message msg{};
-
-    while (!is_stop) {
-        int ret = msgrcv(m_msg_id, &msg, sizeof(msg.msg_text), 1, IPC_NOWAIT);
-        if (ret == -1 && errno == ENOMSG) {
-            std::this_thread::sleep_for(std::chrono::milliseconds(100));
-            continue;
-        }
-        std::cout << "msg: " << msg.msg_text << std::endl;
-        if (msg.msg_type == heartbeat_demo) {
-//                sender(heartbeat_sentry, "alive");
-        }
+    if (m_alive_thread.joinable()) {
+        m_alive_thread.join();
     }
 }
 
+void IpcHelper::sender(const std::string& key, const std::string& value) const {
+    int s_fd = open(s_fifo_path.c_str(), O_WRONLY | O_NONBLOCK);
+    if (s_fd == -1) {
+        perror("s_fd open failed");
+        return;
+    }
+    std::string text = key + "," + value;
+    write(s_fd, text.c_str(), text.size() + 1);
+    close(s_fd);
+}
+
+void IpcHelper::reader() const {
+    struct pollfd fds = {d_fd, POLLIN, 0};
+
+    while (!is_stop) {
+        int result = poll(&fds, 1, 100);
+        if (result > 0) {
+            char buffer[1024];
+            ssize_t bytesRead = read(d_fd, buffer, sizeof(buffer));
+            if (bytesRead > 0) {
+                std::string full_message = std::string (buffer);
+
+                size_t delimiter_pos = full_message.find(',');
+                if (delimiter_pos != std::string::npos) {
+                    std::string key = full_message.substr(0, delimiter_pos);
+                    std::string value = full_message.substr(delimiter_pos + 1);
+
+                }
+            }
+        }
+    }
+}

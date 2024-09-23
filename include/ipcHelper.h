@@ -2,6 +2,13 @@
 #define IPC_HELPER_H
 
 #include <thread>
+#include "version.h"
+
+static std::string k_http = "http";
+static std::string k_alive = "alive";
+static std::string k_del_firmware = "del_firmware";
+static std::string v_http_start = "start";
+static std::string v_http_stop = "stop";
 
 class IpcHelper {
 public:
@@ -13,23 +20,16 @@ public:
     IpcHelper(const IpcHelper &) = delete;
 
     IpcHelper &operator=(const IpcHelper &) = delete;
-public:
-    static const int http_switch = 10;
-    static const int heartbeat_sentry = 20;
-    static const int heartbeat_demo = 21;
 
 private:
-    struct message {
-        long msg_type;
-        char msg_text[100];
-    };
+    std::string s_fifo_path = "/tmp/s_fifo";
+    std::string d_fifo_path = "/tmp/d_fifo";
+    int d_fd = -1;
 
-    std::string msg_path = "/tmp/ipc_key_file";
-
-    int m_msg_id = -1;
     std::thread m_thread;
+    std::thread m_alive_thread;
 public:
-    void sender(int msg_type, const std::string& data) const;
+    void sender(const std::string& key, const std::string& value) const;
 
     void reader() const;
 

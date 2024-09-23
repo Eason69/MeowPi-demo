@@ -56,11 +56,11 @@ extern "C" {
     }
 
     void wrapper_start_http_server() {
-        IpcHelper::GetInstance().sender(IpcHelper::http_switch, "start");
+        IpcHelper::GetInstance().sender(k_http, v_http_start);
     }
 
     void wrapper_stop_http_server() {
-        IpcHelper::GetInstance().sender(IpcHelper::http_switch, "stop");
+        IpcHelper::GetInstance().sender(k_http, v_http_stop);
     }
 
 }

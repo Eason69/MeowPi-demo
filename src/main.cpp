@@ -7,8 +7,8 @@
 #include "catNetwork.h"
 #include "configuration.h"
 #include "ipcHelper.h"
+#include "version.h"
 
-#define VERSION "1.2.0"
 
 std::atomic<bool> is_stop;
 
@@ -26,7 +26,6 @@ int main(int argc, char* argv[]) {
 
         Configuration::GetInstance().loadConfig();
         HidController::GetInstance().listening();
-
         IpcHelper::GetInstance().listening();
         //hidhandle::GetInstance().hidhandleStart();//用于宏，未开发
         catnetwork::GetInstance().netStart();
